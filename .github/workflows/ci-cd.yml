@@ -15,37 +15,29 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK 17 with Maven
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'maven'
 
-      - name: Build with Maven (skip tests)
-        run: mvn clean package -DskipTests
+      - name: Build and Run All Tests
+        run: mvn clean verify
 
-      - name: Build all modules (run tests)
-        run: mvn clean test
-
-      - name: Run Unit Tests
-        run: mvn test
-
-      - name: Run Integration Tests
-        run: mvn verify
-
-      - name: Upload Unit Test Reports
+      - name: Upload Unit Test Reports (citizen-domain)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: unit-test-reports
-          path: 'citizen-domain/target/surefire-reports/*.xml'
+          path: citizen-domain/target/surefire-reports/*.xml
 
-      - name: Upload Integration Test Reports
+      - name: Upload Integration Test Reports (citizen-service)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: integration-test-reports
-          path: '**/target/failsafe-reports/*.xml'
+          path: citizen-service/target/failsafe-reports/*.xml
 
   create-release:
     needs: build-and-test
@@ -56,11 +48,12 @@ jobs:
         with:
           ref: develop
 
-      - name: Set up JDK 17
+      - name: Set up JDK 17 with Maven
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'maven'
 
       - name: Package Application
         run: mvn clean package -DskipTests
