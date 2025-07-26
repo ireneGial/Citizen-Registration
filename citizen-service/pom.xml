@@ -124,6 +124,27 @@
         <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
       </configuration>
     </plugin>
+
+      <plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-failsafe-plugin</artifactId>
+  <version>3.0.0-M9</version>
+  <executions>
+    <execution>
+      <id>integration-tests</id>
+      <goals>
+        <goal>integration-test</goal>
+        <goal>verify</goal>
+      </goals>
+    </execution>
+  </executions>
+  <configuration>
+    <includes>
+      <include>**/*IT.java</include>
+    </includes>
+    <reportsDirectory>${project.build.directory}/failsafe-reports</reportsDirectory>
+  </configuration>
+</plugin>
       
     </plugins>
   </build>
