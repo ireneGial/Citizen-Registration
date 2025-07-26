@@ -30,7 +30,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: unit-test-reports
-          path: ../citizen-domain/target/surefire-reports/*.xml
+          path: citizen-domain/target/surefire-reports/*.xml
 
       - name: Upload Integration Test Reports (citizen-service)
         if: always()
